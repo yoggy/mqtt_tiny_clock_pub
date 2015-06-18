@@ -24,4 +24,3 @@ autorestart     = true
 user            = username
 environment     = HOME=/home/username/
 redirect_stderr = true
-stdout_logfile  = /path/to/mqtt_tiny_clock_pub/log.txt
