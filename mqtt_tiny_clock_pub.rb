@@ -11,6 +11,8 @@ require 'json'
 require 'time'
 require 'pit'
 
+$stdout.sync = true
+
 $config = Pit.get("mqtt_tiny_clock_pub", :require => {
   "remote_host" => "mqtt.example.com",
   "remote_port" => 1883,
@@ -29,38 +31,30 @@ if $config["use_auth"] == true
   $conn_opts["password"] = $config["password"]
 end
 
-
 $old_t = Time.now
 $now_t = Time.now
+
+$topic = $config["topic"]
+if ARGV.size > 0
+  $topic = ARGV[0]
+end
 
 def publish(c, t)
   message = "segd" + t.strftime("%H%M")
   puts "publish to topic=#{$config["topic"]} : #{message}"
-  c.publish($config["topic"], message)
+  c.publish($topic, message)
 end
 
-if __FILE__ == $0
-  loop do
-    begin
-      MQTT::Client.connect($conn_opts) do |c|
-         puts "connected!"
-
-         loop do
-           $now_t = Time.now
-           diff = $now_t.to_f - $old_t.to_f
-           if diff > 1.0
-             publish(c, $now_t)
-             $old_t = $now_t
-           end
-           sleep 0.1
-         end
-      end
-    rescue Exception => e
-      puts e
-    end
-    puts "reconnecting..."
-    sleep 5
-  end
+MQTT::Client.connect($conn_opts) do |c|
+   puts "connected!"
+   loop do
+     $now_t = Time.now
+     diff = $now_t.to_f - $old_t.to_f
+     if diff > 1.0
+       publish(c, $now_t)
+       $old_t = $now_t
+     end
+     sleep 0.1
+   end
 end
-
 
