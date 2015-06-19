@@ -18,9 +18,10 @@
 ;
 [program:mqtt_tiny_clock_pub]
 command         = /usr/bin/ruby /path/to/mqtt_tiny_clock_pub/mqtt_tiny_clock_pub.rb
+directory       = /path/to/mqtt_tiny_clock_pub/
 numprocs        = 1
 autostart       = true
 autorestart     = true
+redirect_stderr = true
 user            = username
 environment     = HOME=/home/username/
-redirect_stderr = true
