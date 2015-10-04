@@ -2,6 +2,8 @@ mqtt_tiny_clock_pub.rb
 ====
 publish the local HHMM time using MQTT.
 
+![img01.gif](img01.gif)
+
 setup
 ----
     $ sudo gem install mqtt

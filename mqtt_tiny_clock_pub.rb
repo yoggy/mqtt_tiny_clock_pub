@@ -46,15 +46,15 @@ def publish(c, t)
 end
 
 MQTT::Client.connect($conn_opts) do |c|
-   puts "connected!"
-   loop do
-     $now_t = Time.now
-     diff = $now_t.to_f - $old_t.to_f
-     if diff > 1.0
-       publish(c, $now_t)
-       $old_t = $now_t
-     end
-     sleep 0.1
+  puts "connected!"
+    loop do
+      $now_t = Time.now
+      diff = $now_t.to_f - $old_t.to_f
+      if diff > 1.0
+        publish(c, $now_t)
+        $old_t = $now_t
+      end
+      sleep 0.1
    end
 end
 
